@@ -1,11 +1,17 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import employeeRoutes from './routes/employeeRoutes.js';  // 👈 import the router
 
 dotenv.config();
 
 const app = express();
+
+// Middleware to parse JSON
 app.use(express.json());
+
+// Use employee routes
+app.use(employeeRoutes);  // 👈 mount the router
 
 const MONGO_URI = process.env.MONGO_URI;
 mongoose.connect(MONGO_URI)
