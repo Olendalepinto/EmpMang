@@ -1,19 +1,21 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import employeeRoutes from './routes/employeeRoutes.js';  // 👈 import the router
+import employeeRoutes from './routes/employeeRoutes.js';
+import cors from 'cors';
 
 dotenv.config();
 
-const app = express();
+const app = express(); // ✅ define app BEFORE using it
 
-// Middleware to parse JSON
-app.use(express.json());
+app.use(cors()); // ✅ use cors AFTER defining app
+app.use(express.json()); // parse JSON bodies
 
 // Use employee routes
-app.use(employeeRoutes);  // 👈 mount the router
+app.use(employeeRoutes);
 
 const MONGO_URI = process.env.MONGO_URI;
+
 mongoose.connect(MONGO_URI)
   .then(() => console.log('MongoDB connected'))
   .catch((error) => console.error('MongoDB connection error:', error));
@@ -23,4 +25,5 @@ app.get('/', (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
