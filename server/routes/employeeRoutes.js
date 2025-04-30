@@ -1,5 +1,5 @@
 import express from 'express';
-import { Employees } from '../models/Employee.js'; // use ../ to go back one folder
+import { Employees } from '../models/Employee.js';
 
 const router = express.Router();
 
@@ -24,6 +24,17 @@ router.post('/api/employees', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error', error: error.message });
+    }
+});
+
+// ✅ Get all employees
+router.get('/api/employees', async (req, res) => {
+    try {
+        const employees = await Employees.find();
+        res.status(200).json(employees);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to fetch employees', error: error.message });
     }
 });
 
